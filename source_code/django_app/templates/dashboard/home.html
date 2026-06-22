@@ -1,0 +1,28 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Market Overview | B100 Intelligence{% endblock %}
+{% block content %}
+<section class="page-head">
+  <div><h1>Market Intelligence</h1><p>Financial health, growth, leverage, and cash-flow signals.</p></div>
+  <form action="/companies/" class="search"><input name="q" placeholder="Search company or symbol"><button>Search</button></form>
+</section>
+<section class="stats">
+  <div><span>Companies</span><strong>{{ company_count }}</strong></div>
+  <div><span>Average health</span><strong>{{ avg_score|floatformat:1|default:"-" }}</strong></div>
+  <div><span>Sectors</span><strong>{{ sectors|length }}</strong></div>
+</section>
+<h2>Featured companies</h2>
+<section class="company-grid">
+{% for company in featured %}
+  <a class="company-card" href="/company/{{ company.symbol }}/">
+    <span>{{ company.symbol }}</span><h3>{{ company.company_name }}</h3>
+    <p>{{ company.sector }}</p><strong>{{ company.health_score|floatformat:1|default:"-" }} {{ company.health_label|default:"" }}</strong>
+  </a>
+{% empty %}<p>No warehouse data loaded.</p>{% endfor %}
+</section>
+<h2>Sectors</h2>
+<section class="sector-grid">
+{% for item in sectors %}<a href="/sector/{{ item.sector|urlencode }}/"><strong>{{ item.sector }}</strong><span>{{ item.count }} companies</span></a>{% endfor %}
+</section>
+<h2>Latest insights</h2>
+<div class="ticker">{% for item in insights %}<span>{{ item.symbol_id }}: {{ item.text }}</span>{% endfor %}</div>
+{% endblock %}

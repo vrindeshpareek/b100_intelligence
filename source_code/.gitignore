@@ -1,0 +1,11 @@
+.env
+config/.env
+__pycache__/
+*.pyc
+.venv/
+venv/
+logs/*.log
+data/clean/*.csv
+data/warehouse/*.csv
+django_app/db.sqlite3
+django_app/staticfiles/

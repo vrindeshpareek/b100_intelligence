@@ -1,0 +1,7 @@
+{% extends "dashboard/base.html" %}
+{% block title %}{{ sector }} Sector | B100 Intelligence{% endblock %}
+{% block content %}
+<h1>{{ sector }} sector</h1>
+<p>Companies and financial-health rankings within this sector.</p>
+<section class="company-grid">{% for c in companies %}<a class="company-card" href="/company/{{ c.symbol }}/"><span>{{ c.symbol }}</span><h3>{{ c.company_name }}</h3><strong>{{ c.health_score|default:"-" }} {{ c.health_label|default:"" }}</strong></a>{% empty %}<p>No companies found.</p>{% endfor %}</section>
+{% endblock %}

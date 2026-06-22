@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>B100 Intelligence</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { margin: 0; font-family: Arial, sans-serif; color: #17202a; background: #f6f7f9; }
+    header { background: #0f172a; color: white; padding: 24px 40px; }
+    main { padding: 28px 40px; max-width: 1200px; margin: 0 auto; }
+    .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+    .card { background: white; border: 1px solid #d9dee7; border-radius: 8px; padding: 18px; }
+    .value { font-size: 32px; font-weight: 700; }
+    table { width: 100%; border-collapse: collapse; background: white; border: 1px solid #d9dee7; }
+    th, td { padding: 10px 12px; border-bottom: 1px solid #e8ebf0; text-align: left; }
+    th { background: #eef2f7; font-size: 13px; }
+    a { color: #0f5cc0; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>B100 Intelligence</h1>
+    <p>Nifty financial warehouse, dashboards, and API</p>
+  </header>
+  <main>
+    <section class="grid">
+      <div class="card"><div>Companies</div><div class="value">{{ company_count }}</div></div>
+      <div class="card"><div>Sectors</div><div class="value">{{ sector_count }}</div></div>
+      <div class="card"><div>Average Health Score</div><div class="value">{{ avg_score|floatformat:1|default:"-" }}</div></div>
+      <div class="card"><div>API Docs</div><p><a href="/api/docs/">Open Swagger</a></p></div>
+    </section>
+
+    <h2>Top Health Scores</h2>
+    <table>
+      <thead><tr><th>Company</th><th>Sector</th><th>Score</th><th>Label</th></tr></thead>
+      <tbody>
+      {% for row in top_scores %}
+        <tr>
+          <td><a href="/companies/{{ row.symbol.symbol }}/">{{ row.symbol.company_name }}</a></td>
+          <td>{{ row.symbol.sector }}</td>
+          <td>{{ row.overall_score }}</td>
+          <td>{{ row.health_label }}</td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="4">Run the ETL pipeline to load warehouse data.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </main>
+</body>
+</html>

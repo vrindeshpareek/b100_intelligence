@@ -1,0 +1,28 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% block title %}{{ company.company_name }} | B100 Intelligence{% endblock %}
+{% block content %}
+<section class="company-head">
+  <div><span>{{ company.symbol }}</span><h1>{{ company.company_name }}</h1><p>{{ company.sector }} / {{ company.sub_sector }}</p></div>
+  <div class="score-box"><span>Health score</span><strong>{{ score.overall_score|default:"-" }}</strong><small>{{ score.health_label|default:"" }}</small></div>
+</section>
+<p class="about">{{ company.about_company }}</p>
+<div id="chart-status" class="notice">Loading financial charts...</div>
+<section class="charts">
+  <article><h2>Revenue & Profit Trend</h2><canvas id="revenueProfit"></canvas></article>
+  <article><h2>Balance Sheet Composition</h2><canvas id="balanceSheet"></canvas></article>
+  <article><h2>Cash Flow Waterfall</h2><canvas id="cashFlow"></canvas></article>
+  <article><h2>EPS & Dividend History</h2><canvas id="epsDividend"></canvas></article>
+  <article><h2>Debt vs Equity</h2><canvas id="debtEquity"></canvas></article>
+  <article><h2>CAGR Radar</h2><canvas id="cagrRadar"></canvas></article>
+  <article><h2>Margin Trend</h2><canvas id="margins"></canvas></article>
+  <article><h2>Health Score Gauge</h2><canvas id="healthGauge"></canvas></article>
+</section>
+<section class="split">
+  <article><h2>Pros</h2>{% for item in pros %}<p class="insight good">{{ item.text }}</p>{% empty %}<p>No pros available.</p>{% endfor %}</article>
+  <article><h2>Cons</h2>{% for item in cons %}<p class="insight bad">{{ item.text }}</p>{% empty %}<p>No cons available.</p>{% endfor %}</article>
+</section>
+<h2>Annual reports</h2>
+<div class="reports">{% for doc in documents %}<a href="{{ doc.annual_report }}" target="_blank" rel="noopener">{{ doc.fiscal_year }}</a>{% empty %}<span>No reports available.</span>{% endfor %}</div>
+{% endblock %}
+{% block scripts %}<script>window.B100_SYMBOL="{{ company.symbol }}";</script><script src="{% static 'dashboard/company_charts.js' %}"></script>{% endblock %}

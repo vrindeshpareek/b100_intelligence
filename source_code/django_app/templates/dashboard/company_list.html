@@ -1,0 +1,16 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Companies | B100 Intelligence{% endblock %}
+{% block content %}
+<h1>Companies</h1>
+<form class="filters">
+  <input name="q" value="{{ request.GET.q }}" placeholder="Company or symbol">
+  <select name="sector"><option value="">All sectors</option>{% for sector in sectors %}<option {% if request.GET.sector == sector %}selected{% endif %}>{{ sector }}</option>{% endfor %}</select>
+  <select name="health"><option value="">All health labels</option><option>EXCELLENT</option><option>GOOD</option><option>AVERAGE</option><option>WEAK</option><option>POOR</option></select>
+  <select name="debt"><option value="">All debt levels</option><option value="low">Low</option><option value="medium">Medium</option><option value="high">High</option></select>
+  <select name="sort"><option value="-health_score">Score high-low</option><option value="-roe_pct">ROE high-low</option><option value="company_name">Company name</option></select>
+  <button>Apply</button>
+</form>
+<div class="table-wrap"><table><thead><tr><th>Symbol</th><th>Company</th><th>Sector</th><th>ROE</th><th>Score</th><th>Health</th></tr></thead><tbody>
+{% for c in companies %}<tr><td>{{ c.symbol }}</td><td><a href="/company/{{ c.symbol }}/">{{ c.company_name }}</a></td><td>{{ c.sector }}</td><td>{{ c.roe_pct|default:"-" }}</td><td>{{ c.health_score|default:"-" }}</td><td>{{ c.health_label|default:"-" }}</td></tr>{% empty %}<tr><td colspan="6">No matching companies.</td></tr>{% endfor %}
+</tbody></table></div>
+{% endblock %}
